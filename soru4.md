@@ -19,3 +19,11 @@ When Matched and SHA512(STRING(t.cdc_date, "UTC")) <>SHA512( STRING(s.cdc_date, 
 Or  SHA512(t.category)<>SHA512(s.category) Then 
 Update Set t.cdc_date=s.cdc_date,t.category=s.category;
 ```
+## Test için
+```SQL
+select *
+from fatma_gezer.content_category t
+full join fatma_gezer.content_category_target s
+on farm_fingerprint(to_json_string(t.id)) =farm_fingerprint(to_json_string(s.id)) 
+where t.id is null or s.id is null
+```
