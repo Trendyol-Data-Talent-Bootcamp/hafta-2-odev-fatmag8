@@ -21,11 +21,18 @@ from solution;
 ```
 ##Alternatif sorgu
 ```SQL
+CREATE TABLE IF NOT EXISTS fatma_gezer.pageview_minute(
+  `view_period` TIMESTAMP,
+  `active_user` INT64
+);
+
+DECLARE init_time TIMESTAMP DEFAULT '2020-03-02 23:55:00';
+
 WHILE init_time < '2020-03-03 23:55:00' DO
   INSERT INTO  fatma_gezer.pageview_minute (view_period, active_user)
         SELECT timestamp_add(init_time,INTERVAL 5 MINUTE) as view_period,
         HLL_COUNT.extract(HLL_COUNT.init(deviceid,24)) as active_user FROM fatma_gezer.pageview
           WHERE view_ts BETWEEN init_time AND timestamp_add(init_time,INTERVAL 5 MINUTE);
   SET init_time = timestamp_add(init_time, INTERVAL 1 MINUTE);
-END WHILE;
+END WHILE
 ```
